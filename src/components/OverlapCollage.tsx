@@ -32,11 +32,9 @@ export default function OverlapCollage({
   ];
   // (mobile)
   const slotsMobile: Slot[] = [
-    { top: 6, left: 54, w: 40, h: 18 },
-    { top: 34, left: 58, w: 36, h: 36 },
-    { top: 72, left: 20, w: 60, h: 18 },
-    { top: 6, left: 6, w: 40, h: 26 },
-    { top: 36, left: 6, w: 36, h: 36 },
+    { top: 4, left: 8, w: 40, h: 18 },
+    { top: 4, left: 52, w: 40, h: 18 },
+    { top: 72, left: 14, w: 72, h: 18 },
   ];
 
   // zona de exclusión para el logo/CTA (por si querés moverla)

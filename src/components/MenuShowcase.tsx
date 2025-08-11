@@ -223,9 +223,9 @@ function Card({ dish, onOpen }: { dish: Dish; onOpen: () => void }) {
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
           <h3 className="font-semibold leading-snug">{dish.name}</h3>
-          <span className="text-sm bg-white/10 rounded-full px-2 py-1">
+          {/* <span className="text-sm bg-white/10 rounded-full px-2 py-1">
             {dish.price != null ? fARS.format(dish.price) : "—"}
-          </span>
+          </span> */}
         </div>
 
         <p className="mt-1 text-sm text-white/70 line-clamp-2">{dish.desc}</p>
@@ -289,9 +289,9 @@ function DishModal({ dish, onClose }: { dish: Dish; onClose: () => void }) {
         <div className="p-5">
           <div className="flex items-start justify-between gap-3">
             <h3 className="text-xl font-semibold">{dish.name}</h3>
-            <span className="text-sm bg-white/10 rounded-full px-2 py-1">
+            {/* <span className="text-sm bg-white/10 rounded-full px-2 py-1">
               {dish.price != null ? fARS.format(dish.price) : "—"}
-            </span>
+            </span> */}
           </div>
           <p className="mt-2 text-white/80">{dish.desc}</p>
           <div className="mt-3 flex gap-2">

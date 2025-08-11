@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nombre del Resto – Cocina Nikkei",
-  description: "Experiencia nikkei en Buenos Aires. Reservas, carta y música.",
+  title: "NÕVA SUSHI",
+  description: "El mejor sushi de Cordoba.",
   openGraph: {
-    title: "Nombre del Resto – Cocina Nikkei",
-    description: "Experiencia nikkei en Buenos Aires.",
+    title: "NÕVA SUSHI",
+    description: "El mejor sushi de Cordoba..",
     type: "website"
   },
 };
