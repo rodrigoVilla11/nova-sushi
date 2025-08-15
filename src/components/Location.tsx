@@ -3,7 +3,11 @@ import { motion } from "framer-motion";
 
 export default function Location() {
   return (
-    <section id="ubicacion" className="relative py-20 md:py-28 bg-black">
+    <section
+      id="ubicacion"
+     className="relative py-20 md:py-28 bg-black bg-no-repeat bg-cover bg-center"
+      style={{ backgroundImage: "url('/hero/fondo3.png')" }}
+    >
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           {/* Mapa */}
@@ -31,7 +35,7 @@ export default function Location() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="flex flex-col justify-center space-y-6"
+            className="flex flex-col justify-center space-y-6 bg-black rounded-2xl ring-1 ring-white/10 p-5 md:p-6 space-y-3"
           >
             <div>
               <h2 className="text-3xl font-semibold mb-2">Nuestra ubicación</h2>

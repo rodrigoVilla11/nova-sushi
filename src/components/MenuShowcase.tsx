@@ -25,7 +25,6 @@ const slug = (s: string) =>
     .replace(/\p{Diacritic}/gu, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
-console.log("rawDishes", rawDishes);
 
 const DISHES: Dish[] = (rawDishes as any[]).map((d, i) => ({
   id: d.id ?? `${slug(d.name ?? "dish")}-${i}`,
@@ -37,7 +36,6 @@ const DISHES: Dish[] = (rawDishes as any[]).map((d, i) => ({
   tags: Array.isArray(d.tags) ? d.tags : [],
 }));
 
-console.log("DISHES", DISHES);
 // 3) Categorías (tomadas del JSON + "Todos")
 const CATEGORIES = useMemoCategories(DISHES);
 
@@ -76,7 +74,7 @@ export default function MenuShowcase() {
   return (
     <section
       id="menu"
-      className="min-h-screen flex flex-col justify-center pb-8"
+      className="min-h-screen flex flex-col justify-center pb-8 bg-no-repeat bg-cover bg-center"
       style={{ backgroundImage: "url('/hero/fondo3.png')" }}
     >
       <div className="mx-auto w-full max-w-6xl px-6">

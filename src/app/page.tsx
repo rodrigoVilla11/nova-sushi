@@ -12,15 +12,15 @@ import { STEPS } from "src/data/steps";
 export default function Page() {
   return (
     <main className="relative">
-      <DotsNav ids={["hero","menu","story","reservations","location","sounds"]} />
+      <DotsNav ids={["hero","menu","story","franquicias","location"]} />
       <StickyCTA />
 
       <section id="hero" className="section"><Hero /></section>
       <section id="menu" className="section"><MenuShowcase /></section>
       <section id="story" className="section"><Story title="Nuestra historia" kicker="Nõva Sushi" steps={STEPS}/></section>
       <section id="location" className="section"><Location /></section>
-      <section id="reservations" className="section"><Franchise whatsappNumber="5493512345678" email="franquicias@novasushi.com" /></section>
-      <section id="sounds" className="section"><SpotifyBlock /></section>
+      <section id="franquicias" className="section"><Franchise whatsappNumber="5493512345678" email="franquicias@novasushi.com" /></section>
+      {/* <section id="sounds" className="section"><SpotifyBlock /></section> */}
     </main>
   );
 }

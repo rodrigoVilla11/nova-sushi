@@ -1,25 +1,54 @@
+// data/storySteps.ts
+
 import { StoryStep } from "src/components/Story";
 
 export const STEPS: StoryStep[] = [
   {
-    id: "origen",
-    label: "2019",
-    title: "El origen",
-    text: "Arrancamos con una barra pequeña y mucho fuego creativo. El objetivo: traer una mirada callejera al sushi.",
-    media: { type: "image", src: "/us.jpg", alt: "Barra inicial" },
+    id: "inicio-2023",
+    label: "2023",
+    title: "El inicio del sueño",
+    text:
+      "A los 22 años decidimos emprender: trajimos una franquicia a Córdoba. Sin el soporte esperado, tuvimos que aprender todo desde cero mientras empujábamos con marketing y mucho esfuerzo.",
+    media: { type: "image", src: "/armandolocal.png", alt: "Primer local y primeras campañas" },
   },
   {
-    id: "sushidog",
-    label: "2021",
-    title: "Nace el Sushidog",
-    text: "Nuestro clásico: técnica japonesa y espíritu de street food. Crocante, fresco, adictivo.",
-    media: { type: "video", src: "/story/sushidog.mp4" },
+    id: "aprendizaje-23-24",
+    label: "2023–2024",
+    title: "Aprendizaje y resiliencia",
+    text:
+      "Proveedores, equipo, liderazgo y jornadas de 18 horas (7 a 23). Con constancia, las ventas crecieron y la comunidad empezó a conocernos.",
+    media: { type: "image", src: "/story/aprendizaje.jpg", alt: "Equipo en cocina y operaciones" },
   },
   {
-    id: "equipo",
-    label: "2024",
-    title: "Equipo y comunidad",
-    text: "Crecimos de forma orgánica con un equipo que ama lo que hace y clientes que recomiendan.",
-    media: { type: "image", src: "/story/equipo.jpg" },
+    id: "nace-nova-2025",
+    label: "2025",
+    title: "Nace Nõva Sushi",
+    text:
+      "Al ver que el valor lo construíamos nosotros, nos separamos de la franquicia. Nace Nõva con foco en innovación: piezas más grandes, Sushi Dog y Sushi Burger.",
+    media: { type: "image", src: "/us.jpg", alt: "Branding y primeros productos Nõva" },
+  },
+  {
+    id: "filosofia",
+    label: "Filosofía",
+    title: "Fresco, al día y con valor justo",
+    text:
+      "Todo se hace en el día, con piezas grandes y producto fresco. Buscamos que el cliente pague el precio que vale por calidad y cantidad.",
+    media: { type: "image", src: "/hero/corte-salmon.jpg", alt: "Mise en place y producto fresco" },
+  },
+  {
+    id: "presente-2025",
+    label: "2025",
+    title: "Presente: Ambrosio Olmos",
+    text:
+      "Un local en Ambrosio Olmos, 30–90 pedidos diarios, presencia online fuerte y virales gracias a la Sushi Burger y el Sushi Dog.",
+    media: { type: "image", src: "/nova-sushi.png", alt: "Local y productos virales" },
+  },
+  {
+    id: "futuro",
+    label: "Futuro",
+    title: "Franquiciar y expandir",
+    text:
+      "Primero franquicias en Córdoba, luego expansión nacional y, a futuro, internacional.",
+    media: { type: "image", src: "/story/futuro.jpg", alt: "Mapa de expansión y aperturas" },
   },
 ];

@@ -31,7 +31,7 @@ export default function Story({
     <section
       id="story"
       ref={ref}
-      className="relative py-20 md:py-28"
+      className="relative py-20 md:py-28 bg-center"
       style={{ backgroundImage: "url('/hero/fondo3.png')" }}
     >
       {/* fondo sutil */}
@@ -69,7 +69,7 @@ export default function Story({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
               transition={{ duration: 0.5, delay: i * 0.04 }}
-              className="relative overflow-hidden rounded-2xl ring-1 ring-white/10 bg-white/[0.04]"
+              className="relative overflow-hidden rounded-2xl ring-1 ring-white/10 bg-black"
             >
               {/* etiqueta */}
               {s.label && (
