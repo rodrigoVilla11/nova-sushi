@@ -1,8 +1,8 @@
 "use client";
 
 export default function StickyCTA() {
-  const whatsappNumber = "5493512345678"; // Reemplaza por tu número con código de país
-  const message = "¡Hola! Quiero reservar una mesa."; // Mensaje inicial opcional
+  const whatsappNumber = "5493512583838"; // Reemplaza por tu número con código de país
+  const message = "¡Hola! Quiero hacer un pedido."; // Mensaje inicial opcional
 
   return (
     <div className="fixed bottom-4 left-0 right-0 z-50 flex justify-center px-4">

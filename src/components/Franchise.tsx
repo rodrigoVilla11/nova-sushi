@@ -63,8 +63,8 @@ function buildWaBody(fd: FormData) {
 }
 
 export default function Franchise({
-  whatsappNumber = "5493512345678", // <— cambiá por tu número
-  email = "franquicias@novasushi.com", // <— cambiá por tu email
+  whatsappNumber = "5493512583838", // <— cambiá por tu número
+  email = "info@nova-sushi.com", // <— cambiá por tu email
 }: {
   whatsappNumber?: string;
   email?: string;

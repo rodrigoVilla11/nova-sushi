@@ -19,7 +19,7 @@ export default function Page() {
       <section id="menu" className="section"><MenuShowcase /></section>
       <section id="story" className="section"><Story title="Nuestra historia" kicker="Nõva Sushi" steps={STEPS}/></section>
       <section id="location" className="section"><Location /></section>
-      <section id="franquicias" className="section"><Franchise whatsappNumber="5493512345678" email="franquicias@novasushi.com" /></section>
+      <section id="franquicias" className="section"><Franchise whatsappNumber="5493512583838" email="franquicias@novasushi.com" /></section>
       {/* <section id="sounds" className="section"><SpotifyBlock /></section> */}
     </main>
   );
