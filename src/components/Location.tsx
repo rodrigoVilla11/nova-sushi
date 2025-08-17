@@ -8,7 +8,7 @@ export default function Location() {
      className="relative py-20 md:py-28 bg-black bg-no-repeat bg-cover bg-center"
       style={{ backgroundImage: "url('/hero/fondo3.png')" }}
     >
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-6xl px-6  pb-44">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           {/* Mapa */}
           <motion.div

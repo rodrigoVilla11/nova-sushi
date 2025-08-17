@@ -49,6 +49,6 @@ export const STEPS: StoryStep[] = [
     title: "Franquiciar y expandir",
     text:
       "Primero franquicias en Córdoba, luego expansión nacional y, a futuro, internacional.",
-    media: { type: "image", src: "/story/futuro.jpg", alt: "Mapa de expansión y aperturas" },
+    media: { type: "image", src: "/hero/expansion.png", alt: "Mapa de expansión y aperturas" },
   },
 ];
