@@ -183,9 +183,8 @@ const IMAGES = [
   "/DSC09979.jpg",
   "/DSC00544.jpg",
   "/DSC00320.jpg",
-  "/DSC00328.jpg"
+  "/DSC00328.jpg",
 ];
-
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -197,46 +196,53 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
 
   return (
-   <section
-  id="hero"
-  ref={ref}
-  className="relative min-h-screen grid place-items-center overflow-hidden bg-cover bg-center"
-  style={{ backgroundImage: "url('/hero/fondo3.png')" }}
->
-  {/* Collage por encima del fondo */}
-  <div className="absolute inset-0 z-10">
-    <OverlapCollage images={IMAGES} interval={3400} feather={0.1} />
-  </div>
-
-  {/* Contenido arriba de todo */}
-  <div className="relative z-20 mx-auto max-w-5xl px-6 text-center">
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      style={{ y, opacity }}
+    <section
+      id="hero"
+      ref={ref}
+      className="relative min-h-screen grid place-items-center overflow-hidden bg-cover bg-center"
+      style={{ backgroundImage: "url('/hero/fondo3.png')" }}
     >
-      <Image src="/hero/logo.png" alt="Nõva Sushi" width={300} height={200} priority />
-    </motion.div>
+      {/* Collage por encima del fondo */}
+      <div className="absolute inset-0 z-10">
+        <OverlapCollage images={IMAGES} interval={3400} feather={0.1} />
+      </div>
 
-    <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className="mt-6 flex items-center justify-center gap-3"
-    >
-      <a
-        href="#menu"
-        className="px-6 py-2 rounded-full bg-[#e8e0cf] text-black font-medium tracking-widest hover:brightness-95 active:scale-95 transition"
-        style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
-      >
-        VER CARTA
-      </a>
-    </motion.div>
-  </div>
-</section>
+      {/* Contenido arriba de todo */}
+      <div className="relative z-20 mx-auto max-w-5xl px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          style={{ y, opacity }}
+        >
+          <Image
+            src="/hero/logo.png"
+            alt="Nõva Sushi"
+            width={300}
+            height={200}
+            priority
+          />
+        </motion.div>
 
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-6 flex items-center justify-center gap-3"
+        >
+          <a
+            href="https://web.pedisy.com/n%C3%B5va-sushi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-2 rounded-full bg-[#e8e0cf] text-black font-medium tracking-widest hover:brightness-95 active:scale-95 transition"
+            style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
+          >
+            VER CARTA
+          </a>
+        </motion.div>
+      </div>
+    </section>
   );
 }

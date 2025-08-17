@@ -17,7 +17,7 @@ export const STEPS: StoryStep[] = [
     title: "Aprendizaje y resiliencia",
     text:
       "Proveedores, equipo, liderazgo y jornadas de 18 horas (7 a 23). Con constancia, las ventas crecieron y la comunidad empezó a conocernos.",
-    media: { type: "image", src: "/story/aprendizaje.jpg", alt: "Equipo en cocina y operaciones" },
+    media: { type: "image", src: "/hero/kitchen.jpeg", alt: "Equipo en cocina y operaciones" },
   },
   {
     id: "nace-nova-2025",
