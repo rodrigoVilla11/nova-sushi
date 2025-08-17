@@ -60,8 +60,8 @@ export default function MenuShowcase() {
 
   // ✅ calcular categorías DENTRO del componente usando useMemo (ya no es un "hook" custom)
   const CATEGORIES = useMemo(() => {
-    const cats = Array.from(new Set(DISHES.map((d) => d.category))).sort((a, b) =>
-      a.localeCompare(b)
+    const cats = Array.from(new Set(DISHES.map((d) => d.category))).sort(
+      (a, b) => a.localeCompare(b)
     );
     return ["Todos", ...cats] as Array<Dish["category"] | "Todos">;
   }, []);
@@ -71,7 +71,10 @@ export default function MenuShowcase() {
       cat === "Todos" ? DISHES : DISHES.filter((d) => d.category === cat);
     const byQ = q.trim()
       ? byCat.filter((d) =>
-          [d.name, d.desc, d.tags?.join(" ")].join(" ").toLowerCase().includes(q.toLowerCase())
+          [d.name, d.desc, d.tags?.join(" ")]
+            .join(" ")
+            .toLowerCase()
+            .includes(q.toLowerCase())
         )
       : byCat;
     return byQ.slice(0, 6); // ← límite a 6 resultados
@@ -87,8 +90,12 @@ export default function MenuShowcase() {
         <header className="mb-6 space-y-4">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-2xl md:text-3xl font-semibold">Carta destacada</h2>
-              <p className="text-white/70 text-sm">Elegí por categoría o buscá un plato</p>
+              <h2 className="text-2xl md:text-3xl font-semibold">
+                Carta destacada
+              </h2>
+              <p className="text-white/70 text-sm">
+                Elegí por categoría o buscá un plato
+              </p>
             </div>
           </div>
 
@@ -122,7 +129,12 @@ export default function MenuShowcase() {
           {/* Buscador con icono y limpiar */}
           <div className="relative">
             <span className="pointer-events-none absolute inset-y-0 left-3 grid place-items-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" className="opacity-70">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                className="opacity-70"
+              >
                 <path
                   fill="currentColor"
                   d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20 15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
@@ -192,7 +204,13 @@ function Card({ dish, onOpen }: { dish: Dish; onOpen: () => void }) {
       className="group bg-white/5 rounded-2xl overflow-hidden ring-1 ring-white/10 hover:ring-white/20"
     >
       <div className="relative h-40">
-        <Image src={dish.img} alt={dish.name} fill className="object-contain" unoptimized />
+        <Image
+          src={dish.img}
+          alt={dish.name}
+          fill
+          className="object-contain"
+          unoptimized
+        />
         {/* fade rectangular a negro */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -258,7 +276,13 @@ function DishModal({ dish, onClose }: { dish: Dish; onClose: () => void }) {
         className="w-full max-w-lg rounded-2xl overflow-hidden bg-black ring-1 ring-white/10"
       >
         <div className="relative h-64">
-          <Image src={dish.img} alt={dish.name} fill className="object-contain" unoptimized />
+          <Image
+            src={dish.img}
+            alt={dish.name}
+            fill
+            className="object-contain"
+            unoptimized
+          />
           <button
             onClick={onClose}
             className="absolute top-3 right-3 h-8 w-8 grid place-items-center rounded-full bg-black/60 hover:bg-black/80"
@@ -285,6 +309,23 @@ function DishModal({ dish, onClose }: { dish: Dish; onClose: () => void }) {
               </span>
             ))}
           </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mt-6 flex items-center justify-center gap-3"
+          >
+            <a
+              href="https://web.pedisy.com/n%C3%B5va-sushi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-2 rounded-full bg-[#e8e0cf] text-black font-medium tracking-widest hover:brightness-95 active:scale-95 transition"
+              style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
+            >
+              HACE TU PEDIDO
+            </a>
+          </motion.div>
         </div>
       </motion.div>
     </motion.div>
