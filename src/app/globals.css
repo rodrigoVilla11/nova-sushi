@@ -12,3 +12,53 @@ body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter,
     "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
 }
+
+/* Hide scrollbar while keeping scroll functionality */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome / Safari */
+}
+
+@layer components {
+  .section-container {
+    @apply mx-auto max-w-6xl px-6;
+  }
+  .card {
+    @apply rounded-2xl ring-1 ring-white/10 bg-white/5;
+  }
+
+  /* ── Button system ──────────────────────────────────────── */
+
+  /* bg-brand-cta (#e8e0cf) + text-black — contraste 13:1 */
+  .btn-primary {
+    @apply inline-block rounded-full font-semibold tracking-wide transition
+           hover:brightness-95 active:scale-95
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50;
+    background-color: #e8e0cf;
+    color: #000;
+  }
+
+  /* WhatsApp green (#25D366) + text-white — contraste 4.5:1 */
+  .btn-wa {
+    @apply inline-flex items-center gap-2 rounded-full font-semibold tracking-wide transition
+           hover:brightness-110 active:scale-95
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50;
+    background-color: #25D366;
+    color: #fff;
+  }
+
+  /* border + text-white sobre fondo oscuro */
+  .btn-outline {
+    @apply inline-block rounded-full font-medium tracking-wide border border-white/30 text-white transition
+           hover:bg-white/10 active:scale-95
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30;
+  }
+
+  /* link-estilo sin background */
+  .btn-ghost {
+    @apply font-medium text-white/70 transition hover:text-white;
+  }
+}

@@ -1,7 +1,8 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useRef } from "react";
+import { CONTACT } from "src/lib/config";
 
 export type StoryStep = {
   id: string;
@@ -20,6 +21,7 @@ export default function Story({
   kicker?: string;
   steps: StoryStep[];
 }) {
+  const prefersReducedMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -53,10 +55,18 @@ export default function Story({
             <h2 className="text-3xl md:text-4xl font-semibold leading-tight">
               {title}
             </h2>
-            <p className="text-white/70 text-sm">
+            <p className="text-white/70 text-base">
               Un recorrido por los hitos, sabores y decisiones que nos trajeron
               hasta acá.
             </p>
+            <a
+              href={CONTACT.pedisyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mt-4 px-5 py-2 text-sm"
+            >
+              Hacer un pedido →
+            </a>
           </div>
         </div>
 
@@ -95,10 +105,11 @@ export default function Story({
                     <video
                       className="absolute inset-0 h-full w-full object-cover"
                       src={s.media.src}
-                      autoPlay
+                      autoPlay={!prefersReducedMotion}
                       muted
                       loop
                       playsInline
+                      preload="metadata"
                     />
                   )}
                   {/* fade rectangular a negro en bordes */}

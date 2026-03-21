@@ -17,7 +17,7 @@ export default function SpotifySection({
             href={`https://open.spotify.com/playlist/${encodeURIComponent(playlistId)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:inline-flex px-5 py-2 rounded-full bg-[#e8e0cf] text-black font-medium tracking-widest hover:brightness-95 active:scale-95"
+            className="btn-primary hidden md:inline-block px-5 py-2"
           >
             ABRIR EN SPOTIFY
           </a>
@@ -30,7 +30,7 @@ export default function SpotifySection({
             href={`https://open.spotify.com/playlist/${encodeURIComponent(playlistId)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex px-5 py-2 rounded-full bg-[#e8e0cf] text-black font-medium tracking-widest hover:brightness-95 active:scale-95"
+            className="btn-primary px-5 py-2"
           >
             ABRIR EN SPOTIFY
           </a>

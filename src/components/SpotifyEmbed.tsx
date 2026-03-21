@@ -42,7 +42,7 @@ export default function SpotifyEmbed({
             <motion.div
               initial={{ scale: 0.98, opacity: 0.9 }}
               whileHover={{ scale: 1.0, opacity: 1 }}
-              className="flex items-center gap-3 px-5 py-3 rounded-full bg-[#e8e0cf] text-black font-medium tracking-widest"
+              className="btn-primary px-5 py-3"
             >
               ▶️ REPRODUCIR EN SPOTIFY
             </motion.div>

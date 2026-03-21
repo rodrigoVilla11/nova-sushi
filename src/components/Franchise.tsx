@@ -1,6 +1,7 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMemo, useState } from "react";
+import { CONTACT } from "src/lib/config";
 
 function WA(number: string, msg: string) {
   return `https://wa.me/${number}?text=${encodeURIComponent(msg)}`;
@@ -44,8 +45,6 @@ const FAQ = [
   },
 ];
 
-// helpers arriba del componente Franchise
-const WA_ADMIN = "5493547570006"; // <- tu número destino (sin +)
 const MAX_MSG = 300;
 
 function buildWaBody(fd: FormData) {
@@ -63,8 +62,8 @@ function buildWaBody(fd: FormData) {
 }
 
 export default function Franchise({
-  whatsappNumber = "5493512583838", // <— cambiá por tu número
-  email = "info@nova-sushi.com", // <— cambiá por tu email
+  whatsappNumber = CONTACT.whatsappAdmin,
+  email = CONTACT.email,
 }: {
   whatsappNumber?: string;
   email?: string;
@@ -76,6 +75,7 @@ export default function Franchise({
   const [open, setOpen] = useState<number | null>(null);
 
   const [sent, setSent] = useState(false);
+  const [waLink, setWaLink] = useState("");
   const [msgLen, setMsgLen] = useState(0);
   const [error, setError] = useState("");
 
@@ -94,7 +94,7 @@ export default function Franchise({
       <div className="mx-auto max-w-6xl px-6">
         {/* HERO */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start ">
-          <div className="md:col-span-6 space-y-4 ring-1 ring-white/10 p-5 md:p-6 space-y-3 rounded-2xl bg-black">
+          <div className="md:col-span-6 space-y-4 ring-1 ring-white/10 p-5 md:p-6 rounded-2xl bg-black">
             <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs tracking-wider">
               Programa de franquicias
             </span>
@@ -122,22 +122,25 @@ export default function Franchise({
 
             <div className="flex flex-wrap gap-3 pt-4">
               <a
+                href="/franquicias"
+                className="btn-primary px-5 py-3"
+              >
+                Ver programa completo →
+              </a>
+              <a
                 href={WA(whatsappNumber, waMsg)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-3 rounded-full text-white font-medium tracking-wide hover:brightness-110 active:scale-95 transition shadow-xl"
-                style={{
-                  backgroundColor: "#25D366",
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
-                }}
+                className="btn-wa px-5 py-3"
+                style={{ boxShadow: "0 2px 6px rgba(0,0,0,0.25)" }}
               >
-                {/* WhatsApp svg */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
                   height="18"
                   viewBox="0 0 32 32"
                   fill="currentColor"
+                  aria-hidden="true"
                 >
                   <path d="M16.004 2.003c-7.74 0-14 6.262-14 14 0 2.465.648 4.87 1.884 6.992l-1.996 7.324 7.512-1.968c2.057 1.122 4.375 1.711 6.738 1.711h.002c7.74 0 14-6.262 14-14s-6.26-14.059-14-14.059zM16.002 26.941c-2.07 0-4.084-.555-5.844-1.605l-.418-.246-4.457 1.168 1.184-4.34-.273-.445c-1.168-1.902-1.785-4.09-1.785-6.34 0-6.605 5.383-11.984 12-11.984 3.199 0 6.207 1.246 8.469 3.504 2.266 2.27 3.516 5.277 3.516 8.48-.001 6.615-5.384 12.008-12.392 12.008zM22.602 19.441c-.336-.168-1.992-.984-2.301-1.098-.309-.113-.535-.168-.762.168s-.871 1.098-1.07 1.328c-.197.223-.395.252-.73.084-.336-.168-1.418-.523-2.699-1.672-1-.891-1.672-1.992-1.871-2.328-.197-.336-.021-.516.148-.684.152-.152.336-.395.504-.59.168-.197.223-.336.336-.559.113-.223.057-.418-.029-.59-.084-.168-.762-1.84-1.043-2.523-.275-.66-.555-.57-.762-.582-.195-.012-.418-.014-.641-.014s-.59.084-.898.418c-.309.336-1.18 1.152-1.18 2.812s1.207 3.266 1.375 3.492c.168.223 2.367 3.613 5.73 5.059.801.344 1.426.551 1.914.703.805.256 1.539.219 2.121.133.648-.098 1.992-.812 2.273-1.598.281-.785.281-1.457.197-1.598-.084-.141-.309-.223-.645-.391z" />
                 </svg>
@@ -148,7 +151,7 @@ export default function Franchise({
                 href={`mailto:${email}?subject=${encodeURIComponent(
                   "Franquicia Nõva Sushi"
                 )}`}
-                className="px-5 py-3 rounded-full bg-white text-black font-medium tracking-wide hover:brightness-95 active:scale-95 transition"
+                className="btn-outline px-5 py-3"
               >
                 Pedir dossier por mail
               </a>
@@ -162,13 +165,11 @@ export default function Franchise({
               const fd = new FormData(form);
 
               const name = String(fd.get("name") || "").trim();
-              const email = String(fd.get("email") || "").trim();
+              const emailVal = String(fd.get("email") || "").trim();
               const phone = String(fd.get("phone") || "").trim();
               const city = String(fd.get("city") || "").trim();
-              const exp = String(fd.get("exp") || "");
-              const msg = String(fd.get("msg") || "");
 
-              const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+              const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
               const phoneOk = phone.replace(/\D/g, "").length >= 8;
               if (!name || !emailOk || !phoneOk || !city) {
                 setSent(false);
@@ -178,20 +179,14 @@ export default function Franchise({
 
               setError("");
               const body = buildWaBody(fd);
-              window.open(
-                `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(body)}`,
-                "_blank"
-              );
-
-              const mailBody = body.replace(/\n/g, "%0D%0A");
-              window.location.href = `mailto:${email}?subject=${encodeURIComponent(
-                "Solicitud de franquicia"
-              )}&body=${mailBody}`;
+              const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(body)}`;
+              const popup = window.open(url, "_blank");
 
               form.reset();
               setMsgLen(0);
               setSent(true);
-              setTimeout(() => setSent(false), 4000);
+              if (!popup) setWaLink(url);
+              setTimeout(() => { setSent(false); setWaLink(""); }, 5000);
             }}
             className="md:col-span-6 rounded-3xl bg-black ring-1 ring-white/10 p-0 overflow-hidden"
             initial={{ opacity: 0, y: 16 }}
@@ -211,14 +206,33 @@ export default function Franchise({
 
             {/* mensajes */}
             {error && (
-              <div className="mx-6 mt-4 rounded-xl bg-rose-500/15 text-rose-300 ring-1 ring-rose-500/30 px-3 py-2 text-sm">
+              <div
+                role="alert"
+                className="mx-6 mt-4 rounded-xl bg-rose-500/15 text-rose-300 ring-1 ring-rose-500/30 px-3 py-2 text-sm"
+              >
                 {error}
               </div>
             )}
             {sent && (
-              <div className="mx-6 mt-4 rounded-xl bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30 px-3 py-2 text-sm">
-                ¡Listo! Abrimos WhatsApp con tu solicitud y enviamos una copia
-                por mail.
+              <div
+                role="status"
+                className="mx-6 mt-4 rounded-xl bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30 px-3 py-2 text-sm"
+              >
+                {waLink ? (
+                  <>
+                    Tu solicitud está lista.{" "}
+                    <a
+                      href={waLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline font-medium"
+                    >
+                      Tocá acá para enviarla por WhatsApp →
+                    </a>
+                  </>
+                ) : (
+                  "¡Listo! Te abrimos WhatsApp con tu solicitud."
+                )}
               </div>
             )}
 
@@ -226,7 +240,7 @@ export default function Franchise({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-neutral-900/80 rounded-2xl border border-white/10 shadow-xl">
               {/* nombre */}
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" aria-hidden="true">
                   👤
                 </span>
                 <input
@@ -234,16 +248,16 @@ export default function Franchise({
                   required
                   placeholder=" "
                   autoComplete="name"
-                  className="w-full h-12 bg-white/5 text-white placeholder-transparent pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 transition peer"
+                  className="w-full h-12 bg-white/5 text-white placeholder-transparent pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-brand-accent/60 transition peer"
                 />
-                <label className="pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-sm text-white/60 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-white/50 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-primary/80">
+                <label className="pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-sm text-white/60 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-white/50 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-brand-accent/80">
                   Nombre y apellido
                 </label>
               </div>
 
               {/* email */}
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" aria-hidden="true">
                   ✉️
                 </span>
                 <input
@@ -252,16 +266,16 @@ export default function Franchise({
                   required
                   placeholder=" "
                   autoComplete="email"
-                  className="w-full h-12 bg-white/5 text-white placeholder-transparent pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 transition peer"
+                  className="w-full h-12 bg-white/5 text-white placeholder-transparent pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-brand-accent/60 transition peer"
                 />
-                <label className="pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-sm text-white/60 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-white/50 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-primary/80">
+                <label className="pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-sm text-white/60 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-white/50 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-brand-accent/80">
                   Email
                 </label>
               </div>
 
               {/* teléfono */}
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" aria-hidden="true">
                   📞
                 </span>
                 <input
@@ -270,7 +284,7 @@ export default function Franchise({
                   placeholder=" "
                   inputMode="tel"
                   autoComplete="tel"
-                  className="w-full h-12 bg-white/5 text-white placeholder-transparent pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 transition peer"
+                  className="w-full h-12 bg-white/5 text-white placeholder-transparent pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-brand-accent/60 transition peer"
                   onInput={(e) =>
                     (e.currentTarget.value = e.currentTarget.value.replace(
                       /[^\d+\s()-]/g,
@@ -278,35 +292,39 @@ export default function Franchise({
                     ))
                   }
                 />
-                <label className="pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-sm text-white/60 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-white/50 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-primary/80">
+                <label className="pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-sm text-white/60 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-white/50 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-brand-accent/80">
                   Teléfono
                 </label>
               </div>
 
               {/* ciudad */}
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" aria-hidden="true">
                   📍
                 </span>
                 <input
                   name="city"
                   required
                   placeholder=" "
-                  className="w-full h-12 bg-white/5 text-white placeholder-transparent pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 transition peer"
+                  className="w-full h-12 bg-white/5 text-white placeholder-transparent pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-brand-accent/60 transition peer"
                 />
-                <label className="pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-sm text-white/60 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-white/50 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-primary/80">
+                <label className="pointer-events-none absolute left-10 top-1/2 -translate-y-1/2 text-sm text-white/60 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:text-white/50 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-brand-accent/80">
                   Ciudad / Provincia
                 </label>
               </div>
 
               {/* experiencia */}
               <div className="relative md:col-span-2">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" aria-hidden="true">
                   🏷️
                 </span>
+                <label htmlFor="franchise-exp" className="sr-only">
+                  Experiencia operando locales
+                </label>
                 <select
+                  id="franchise-exp"
                   name="exp"
-                  className="appearance-none w-full h-12 bg-neutral-900 text-white pl-10 pr-10 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 transition"
+                  className="appearance-none w-full h-12 bg-neutral-900 text-white pl-10 pr-10 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-brand-accent/60 transition"
                   defaultValue=""
                 >
                   <option value="" disabled>
@@ -321,26 +339,28 @@ export default function Franchise({
                   width="18"
                   height="18"
                   viewBox="0 0 24 24"
+                  aria-hidden="true"
                 >
                   <path fill="currentColor" d="M7 10l5 5 5-5z" />
                 </svg>
-                <span className="absolute left-10 -top-2 text-xs text-primary/80 bg-neutral-900 px-1 rounded">
+                <span className="absolute left-10 -top-2 text-xs text-brand-accent/80 bg-neutral-900 px-1 rounded">
                   Experiencia
                 </span>
               </div>
 
               {/* mensaje */}
               <div className="relative md:col-span-2">
-                <span className="absolute left-3 top-3 text-white/50">📝</span>
+                <span className="absolute left-3 top-3 text-white/50" aria-hidden="true">📝</span>
                 <textarea
                   name="msg"
                   rows={4}
                   placeholder=" "
-                  className="w-full bg-white/5 text-white placeholder-transparent pt-3 pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-primary/60 transition peer"
+                  aria-label="Mensaje adicional (opcional)"
+                  className="w-full bg-white/5 text-white placeholder-transparent pt-3 pl-10 pr-3 rounded-xl outline-none ring-1 ring-white/10 focus:ring-2 focus:ring-brand-accent/60 transition peer"
                   maxLength={MAX_MSG}
                   onInput={(e) => setMsgLen(e.currentTarget.value.length)}
                 />
-                <label className="pointer-events-none absolute left-10 top-3 text-sm text-white/60 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-white/50   peer-focus:-top-2 peer-focus:text-xs peer-focus:text-primary/80 bg-neutral-900 px-1 rounded">
+                <label className="pointer-events-none absolute left-10 top-3 text-sm text-white/60 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-white/50 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-brand-accent/80 bg-neutral-900 px-1 rounded">
                   Mensaje
                 </label>
                 <div className="mt-2 text-[11px] text-white/60 text-right">
@@ -354,7 +374,7 @@ export default function Franchise({
                   id="terms"
                   type="checkbox"
                   required
-                  className="mt-[2px] h-4 w-4 rounded-md border-white/20 bg-white/10 accent-primary"
+                  className="mt-[2px] h-4 w-4 rounded-md border-white/20 bg-white/10 accent-brand-accent"
                 />
                 <span>
                   Acepto ser contactadx por WhatsApp y email con fines
@@ -362,11 +382,11 @@ export default function Franchise({
                 </span>
               </label>
 
-              {/* CTA (opcional, quitalo si ya lo tenés afuera) */}
+              {/* CTA */}
               <div className="md:col-span-2">
                 <button
                   type="submit"
-                  className="w-full h-12 rounded-xl bg-primary text-white font-medium hover:brightness-110 active:scale-[.99] transition shadow-lg shadow-primary/20"
+                  className="btn-primary w-full h-12"
                 >
                   Enviar
                 </button>
@@ -392,7 +412,7 @@ export default function Franchise({
                     aria-expanded={active}
                   >
                     <span className="font-medium">{item.q}</span>
-                    <span className="text-white/60">{active ? "–" : "+"}</span>
+                    <span className="text-white/60" aria-hidden="true">{active ? "–" : "+"}</span>
                   </button>
                   <AnimatePresence initial={false}>
                     {active && (
@@ -413,13 +433,6 @@ export default function Franchise({
           </ul>
         </div>
       </div>
-
-      {/* estilos utilitarios locales */}
-      <style jsx>{`
-        .input {
-          @apply rounded-xl bg-white/10 px-4 py-2 outline-none ring-1 ring-white/15 focus:ring-white/30 placeholder-white/50;
-        }
-      `}</style>
     </section>
   );
 }

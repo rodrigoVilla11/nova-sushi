@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 type Slot = { top: number; left: number; w: number; h: number };
 
@@ -16,6 +16,7 @@ export default function OverlapCollage({
   interval = 3400,
   feather = 0.32,
 }: Props) {
+  const prefersReducedMotion = useReducedMotion();
   // Slots del mock (desktop). Todos fuera del centro.
   // Ajustados para 16:9 aprox. Puedes retocar números fino si querés.
   // En OverlapCollage -> slotsDesktop / slotsMobile
@@ -51,10 +52,7 @@ export default function OverlapCollage({
   const nextRef = useRef(0);
 
   useEffect(() => {
-    const reduce = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (reduce) return;
+    if (prefersReducedMotion) return;
     const id = setInterval(() => {
       setIdxBySlot((curr) => {
         const used = new Set(curr);
@@ -78,7 +76,7 @@ export default function OverlapCollage({
       });
     }, interval);
     return () => clearInterval(id);
-  }, [images.length, L, interval]);
+  }, [images.length, L, interval, prefersReducedMotion]);
 
   const clamp = (n: number, a: number, b: number) =>
     Math.max(a, Math.min(b, n));
@@ -138,19 +136,7 @@ export default function OverlapCollage({
                     alt=""
                     fill
                     className="object-cover"
-                  />
-
-                  {/* overlay rectangular negro en bordes */}
-                  <div
-                    className="pointer-events-none absolute inset-0 z-10"
-      //               style={{
-      //                 boxShadow: `
-      //   inset 0 40px 40px -20px rgba(0,0,0,0.9),  /* arriba */
-      //   inset 0 -40px 40px -20px rgba(0,0,0,0.9), /* abajo */
-      //   inset 40px 0 40px -20px rgba(0,0,0,0.9),  /* izquierda */
-      //   inset -40px 0 40px -20px rgba(0,0,0,0.9)  /* derecha */
-      // `,
-      //               }}
+                    sizes="(max-width: 768px) 0px, 25vw"
                   />
                 </motion.div>
               </AnimatePresence>

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"document.getElementById\\\\|querySelector\\\\|innerHTML\\\\|dangerously\" /c/Users/villa/Projects/novasushi/nova-sushi/src --include=*.ts --include=*.tsx)",
+      "Bash(wc -l /c/Users/villa/Projects/novasushi/nova-sushi/src/components/*.tsx)"
+    ]
+  }
+}

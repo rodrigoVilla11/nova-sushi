@@ -1,5 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { CONTACT } from "src/lib/config";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -47,18 +48,17 @@ const DISHES: Dish[] = (rawDishes as unknown as RawDish[]).map((d, i) => ({
   tags: Array.isArray(d.tags) ? d.tags : [],
 }));
 
-const fARS = new Intl.NumberFormat("es-AR", {
-  style: "currency",
-  currency: "ARS",
-  maximumFractionDigits: 0,
-});
-
 export default function MenuShowcase() {
   const [cat, setCat] = useState<"Todos" | Dish["category"]>("Todos");
   const [q, setQ] = useState("");
+  const [debouncedQ, setDebouncedQ] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
 
-  // ✅ calcular categorías DENTRO del componente usando useMemo (ya no es un "hook" custom)
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedQ(q), 250);
+    return () => clearTimeout(t);
+  }, [q]);
+
   const CATEGORIES = useMemo(() => {
     const cats = Array.from(new Set(DISHES.map((d) => d.category))).sort(
       (a, b) => a.localeCompare(b)
@@ -66,19 +66,19 @@ export default function MenuShowcase() {
     return ["Todos", ...cats] as Array<Dish["category"] | "Todos">;
   }, []);
 
-  const filtered = useMemo(() => {
+  const { filtered, totalCount } = useMemo(() => {
     const byCat =
       cat === "Todos" ? DISHES : DISHES.filter((d) => d.category === cat);
-    const byQ = q.trim()
+    const byQ = debouncedQ.trim()
       ? byCat.filter((d) =>
           [d.name, d.desc, d.tags?.join(" ")]
             .join(" ")
             .toLowerCase()
-            .includes(q.toLowerCase())
+            .includes(debouncedQ.toLowerCase())
         )
       : byCat;
-    return byQ.slice(0, 6); // ← límite a 6 resultados
-  }, [cat, q]);
+    return { filtered: byQ.slice(0, 12), totalCount: byQ.length };
+  }, [cat, debouncedQ]);
 
   return (
     <section
@@ -87,21 +87,22 @@ export default function MenuShowcase() {
       style={{ backgroundImage: "url('/hero/fondo3.png')" }}
     >
       <div className="mx-auto w-full max-w-6xl px-6">
-        <header className="mb-6 space-y-4">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-semibold">
-                Carta destacada
-              </h2>
-              <p className="text-white/70 text-sm">
-                Elegí por categoría o buscá un plato
-              </p>
-            </div>
+        <header className="mb-8 space-y-5">
+          <div>
+            <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs tracking-wider mb-3">
+              Nuestro menú
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold leading-tight">
+              Elegí lo que se te antoja.
+            </h2>
+            <p className="mt-2 text-white/60 text-base">
+              Sushidogs, burgers, rolls y más — entrá al menú para ver el detalle completo.
+            </p>
           </div>
 
-          {/* Categorías: sin scroll, con wrap */}
+          {/* Categorías: scroll horizontal en mobile, wrap en desktop */}
           <div
-            className="flex justify-center items-center flex-wrap gap-2"
+            className="flex items-center gap-2 overflow-x-auto md:flex-wrap md:justify-center pb-1 md:pb-0 no-scrollbar"
             role="tablist"
             aria-label="Categorías de la carta"
           >
@@ -113,7 +114,7 @@ export default function MenuShowcase() {
                   role="tab"
                   aria-selected={active}
                   onClick={() => setCat(c)}
-                  className={`whitespace-nowrap px-3 py-1 rounded-full text-sm ring-1 transition
+                  className={`whitespace-nowrap px-3 py-1 rounded-full text-sm ring-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50
           ${
             active
               ? "bg-white text-black ring-white"
@@ -134,6 +135,7 @@ export default function MenuShowcase() {
                 height="16"
                 viewBox="0 0 24 24"
                 className="opacity-70"
+                aria-hidden="true"
               >
                 <path
                   fill="currentColor"
@@ -145,7 +147,7 @@ export default function MenuShowcase() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Buscar por nombre, descripción o tags…"
-              className="w-full rounded-full bg-white/10 placeholder-white/50 pl-10 pr-10 py-2 outline-none ring-1 ring-white/15 focus:ring-white/30"
+              className="w-full rounded-full bg-white/10 placeholder-white/50 pl-10 pr-10 py-3 outline-none ring-1 ring-white/15 focus:ring-white/30"
               aria-label="Buscar platos"
             />
             {q && (
@@ -161,24 +163,65 @@ export default function MenuShowcase() {
           </div>
         </header>
 
-        {/* Mobile: carrusel snap; Desktop: grid */}
-        <div className="md:hidden -mx-4 px-4">
-          <ul className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2">
-            {filtered.map((d) => (
-              <li key={d.id} className="snap-start shrink-0 w-[74%]">
-                <Card dish={d} onOpen={() => setOpenId(d.id)} />
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Estado vacío */}
+        {filtered.length === 0 && (
+          <div className="py-16 text-center">
+            <p className="text-white/60 text-lg">
+              No encontramos platos para{" "}
+              <span className="text-white/90">&ldquo;{q}&rdquo;</span>
+            </p>
+            <button
+              onClick={() => {
+                setQ("");
+                setCat("Todos");
+              }}
+              className="mt-4 px-4 py-2 rounded-full bg-white/10 text-white/80 text-sm hover:bg-white/20 transition"
+            >
+              Ver todos los platos
+            </button>
+          </div>
+        )}
 
-        <div className="hidden md:grid grid-cols-12 gap-5">
-          {filtered.map((d) => (
-            <div key={d.id} className="col-span-12 sm:col-span-6 lg:col-span-4">
-              <Card dish={d} onOpen={() => setOpenId(d.id)} />
+        {/* Mobile: carrusel snap; Desktop: grid */}
+        {filtered.length > 0 && (
+          <>
+            <div className="md:hidden -mx-4 px-4">
+              <ul className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2">
+                {filtered.map((d) => (
+                  <li key={d.id} className="snap-start shrink-0 w-[74%]">
+                    <Card dish={d} onOpen={() => setOpenId(d.id)} />
+                  </li>
+                ))}
+              </ul>
             </div>
-          ))}
-        </div>
+
+            <div className="hidden md:grid grid-cols-12 gap-5">
+              {filtered.map((d) => (
+                <div key={d.id} className="col-span-12 sm:col-span-6 lg:col-span-4">
+                  <Card dish={d} onOpen={() => setOpenId(d.id)} />
+                </div>
+              ))}
+            </div>
+
+            {totalCount > 12 && (
+              <p className="mt-3 text-center text-white/50 text-xs">
+                Mostrando 12 de {totalCount} platos
+              </p>
+            )}
+
+            <div className="mt-6 text-center">
+              <a
+                href={CONTACT.pedisyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ver menú completo en Pedisy (abre en nueva pestaña)"
+                className="btn-primary px-7 py-3"
+              >
+                Ver menú completo →
+              </a>
+            </div>
+          </>
+        )}
       </div>
 
       <AnimatePresence>
@@ -201,15 +244,15 @@ function Card({ dish, onOpen }: { dish: Dish; onOpen: () => void }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45 }}
-      className="group bg-white/5 rounded-2xl overflow-hidden ring-1 ring-white/10 hover:ring-white/20"
+      className="group bg-white/5 rounded-2xl overflow-hidden ring-1 ring-white/10 hover:ring-white/25 hover:-translate-y-0.5 transition-all duration-200"
     >
-      <div className="relative h-40">
+      <div className="relative h-48">
         <Image
           src={dish.img}
           alt={dish.name}
           fill
           className="object-contain"
-          unoptimized
+          sizes="(max-width: 768px) 74vw, (max-width: 1024px) 50vw, 33vw"
         />
         {/* fade rectangular a negro */}
         <div
@@ -227,16 +270,13 @@ function Card({ dish, onOpen }: { dish: Dish; onOpen: () => void }) {
 
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="font-semibold leading-snug">{dish.name}</h3>
-          {/* <span className="text-sm bg-white/10 rounded-full px-2 py-1">
-            {dish.price != null ? fARS.format(dish.price) : "—"}
-          </span> */}
+          <h3 className="font-semibold text-base leading-snug">{dish.name}</h3>
         </div>
 
         <p className="mt-1 text-sm text-white/70 line-clamp-2">{dish.desc}</p>
 
-        <div className="mt-3 flex items-center justify-between">
-          <div className="flex gap-1">
+        <div className="mt-3 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1 flex-wrap">
             {dish.tags?.map((t) => (
               <span
                 key={t}
@@ -248,7 +288,7 @@ function Card({ dish, onOpen }: { dish: Dish; onOpen: () => void }) {
           </div>
           <button
             onClick={onOpen}
-            className="text-xs font-medium px-3 py-1 rounded-full bg-[#e8e0cf] text-black tracking-widest hover:brightness-95 active:scale-95"
+            className="btn-primary shrink-0 text-xs px-3 py-1"
           >
             VER DETALLE
           </button>
@@ -259,6 +299,42 @@ function Card({ dish, onOpen }: { dish: Dish; onOpen: () => void }) {
 }
 
 function DishModal({ dish, onClose }: { dish: Dish; onClose: () => void }) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Foco al abrir
+    modalRef.current?.focus();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key === "Tab") {
+        const focusable = modalRef.current?.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusable?.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   return (
     <motion.div
       className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4"
@@ -268,12 +344,17 @@ function DishModal({ dish, onClose }: { dish: Dish; onClose: () => void }) {
       onClick={onClose}
     >
       <motion.div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="dish-modal-title"
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
         initial={{ scale: 0.96, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.98, opacity: 0 }}
         transition={{ duration: 0.25 }}
-        className="w-full max-w-lg rounded-2xl overflow-hidden bg-black ring-1 ring-white/10"
+        className="w-full max-w-lg rounded-2xl overflow-hidden bg-black ring-1 ring-white/10 outline-none"
       >
         <div className="relative h-64">
           <Image
@@ -281,51 +362,56 @@ function DishModal({ dish, onClose }: { dish: Dish; onClose: () => void }) {
             alt={dish.name}
             fill
             className="object-contain"
-            unoptimized
+            sizes="(max-width: 768px) 100vw, 512px"
           />
           <button
             onClick={onClose}
             className="absolute top-3 right-3 h-8 w-8 grid place-items-center rounded-full bg-black/60 hover:bg-black/80"
-            aria-label="Cerrar"
+            aria-label="Cerrar detalle del plato"
           >
             ✕
           </button>
         </div>
         <div className="p-5">
-          <div className="flex items-start justify-between gap-3">
-            <h3 className="text-xl font-semibold">{dish.name}</h3>
-            {/* <span className="text-sm bg-white/10 rounded-full px-2 py-1">
-              {dish.price != null ? fARS.format(dish.price) : "—"}
-            </span> */}
+          <div>
+            <h3 id="dish-modal-title" className="text-xl font-semibold leading-snug">
+              {dish.name}
+            </h3>
           </div>
-          <p className="mt-2 text-white/80">{dish.desc}</p>
-          <div className="mt-3 flex gap-2">
-            {dish.tags?.map((t) => (
-              <span
-                key={t}
-                className="text-[11px] uppercase tracking-wider bg-white/10 px-2 py-0.5 rounded-full"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-6 flex items-center justify-center gap-3"
-          >
+          <p className="mt-2 text-white/70 text-sm leading-relaxed">{dish.desc}</p>
+          {dish.tags && dish.tags.length > 0 && (
+            <div className="mt-3 flex gap-1.5 flex-wrap">
+              {dish.tags.map((t) => (
+                <span
+                  key={t}
+                  className="text-[11px] uppercase tracking-wider bg-white/10 px-2 py-0.5 rounded-full"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          )}
+          <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <a
-              href="https://web.pedisy.com/n%C3%B5va-sushi"
+              href={CONTACT.pedisyUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-2 rounded-full bg-[#e8e0cf] text-black font-medium tracking-widest hover:brightness-95 active:scale-95 transition"
-              style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
+              className="btn-primary flex-1 text-center px-6 py-3"
             >
-              HACE TU PEDIDO
+              Pedir online →
             </a>
-          </motion.div>
+            <a
+              href={`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(`¡Hola! Quiero pedir ${dish.name}.`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-wa justify-center flex-1 px-6 py-3"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+                <path d="M16.004 2.003c-7.74 0-14 6.262-14 14 0 2.465.648 4.87 1.884 6.992l-1.996 7.324 7.512-1.968c2.057 1.122 4.375 1.711 6.738 1.711h.002c7.74 0 14-6.262 14-14s-6.26-14.059-14-14.059zM16.002 26.941c-2.07 0-4.084-.555-5.844-1.605l-.418-.246-4.457 1.168 1.184-4.34-.273-.445c-1.168-1.902-1.785-4.09-1.785-6.34 0-6.605 5.383-11.984 12-11.984 3.199 0 6.207 1.246 8.469 3.504 2.266 2.27 3.516 5.277 3.516 8.48-.001 6.615-5.384 12.008-12.392 12.008zM22.602 19.441c-.336-.168-1.992-.984-2.301-1.098-.309-.113-.535-.168-.762.168s-.871 1.098-1.07 1.328c-.197.223-.395.252-.73.084-.336-.168-1.418-.523-2.699-1.672-1-.891-1.672-1.992-1.871-2.328-.197-.336-.021-.516.148-.684.152-.152.336-.395.504-.59.168-.197.223-.336.336-.559.113-.223.057-.418-.029-.59-.084-.168-.762-1.84-1.043-2.523-.275-.66-.555-.57-.762-.582-.195-.012-.418-.014-.641-.014s-.59.084-.898.418c-.309.336-1.18 1.152-1.18 2.812s1.207 3.266 1.375 3.492c.168.223 2.367 3.613 5.73 5.059.801.344 1.426.551 1.914.703.805.256 1.539.219 2.121.133.648-.098 1.992-.812 2.273-1.598.281-.785.281-1.457.197-1.598-.084-.141-.309-.223-.645-.391z" />
+              </svg>
+              WhatsApp
+            </a>
+          </div>
         </div>
       </motion.div>
     </motion.div>
