@@ -1,27 +1,25 @@
 // ============================================================
 // FRANCHISE DATA — Nõva Sushi
-// Editá estos valores con los números reales antes de publicar.
-// Los placeholders están marcados con [TODO].
 // ============================================================
 
 export const FRANCHISE_METRICS = [
   {
-    value: "[TODO]",        // ej: "30–90"
+    value: "30-45",
     unit: "pedidos/día",
     label: "Local propio en Córdoba",
   },
   {
-    value: "$[TODO]",       // ej: "$4.500"
+    value: "$34.000 - $35.000",
     unit: "",
     label: "Ticket promedio",
   },
   {
-    value: "[TODO]%",       // ej: "35%"
+    value: "35-40%",
     unit: "",
     label: "Margen bruto estimado",
   },
   {
-    value: "[TODO]",        // ej: "18–24"
+    value: "12-18",
     unit: "meses",
     label: "Recupero estimado (escenario base)",
   },
@@ -34,7 +32,7 @@ export const FRANCHISE_FORMATS = [
     ideal: "Menor inversión inicial, zonas con alta demanda delivery.",
     surface: "Desde 30m²",
     focus: "Delivery y take away exclusivamente",
-    investment: "$[TODO] USD",   // ej: "USD 20.000"
+    investment: "$25.000 USD",
     highlights: ["Sin salón", "Alta rotación", "Operación más simple"],
   },
   {
@@ -43,14 +41,14 @@ export const FRANCHISE_FORMATS = [
     ideal: "Zonas con tráfico peatonal, experiencia presencial + delivery.",
     surface: "Desde 60m²",
     focus: "Salón + delivery",
-    investment: "$[TODO] USD",   // ej: "USD 35.000"
+    investment: "$40.000 USD",
     highlights: ["Salón integrado", "Mayor ticket en local", "Más impacto de marca"],
   },
 ] as const;
 
 export const FRANCHISE_INVESTMENT = {
-  rangeMin: "USD [TODO]",          // ej: "USD 20.000"
-  rangeMax: "USD [TODO]",          // ej: "USD 45.000"
+  rangeMin: "USD $25.000",
+  rangeMax: "USD $40.000",
   includes: [
     "Licencia de uso de marca (fee inicial)",
     "Equipamiento de cocina homologado",
@@ -74,31 +72,31 @@ export const FRANCHISE_ROI_SCENARIOS = [
     id: "conservador",
     label: "Conservador",
     highlight: false,
-    pedidos: "[TODO]",            // ej: "25–35"
-    ticketPromedio: "$[TODO]",
-    facturacionMensual: "$[TODO]",
-    margenNeto: "[TODO]%",
-    recupero: "[TODO]–[TODO] meses",
+    pedidos: "20-25",
+    ticketPromedio: "$34.000",
+    facturacionMensual: "$20.400.000 - $25.500.000",
+    margenNeto: "10-12%",
+    recupero: "18-24 meses",
   },
   {
     id: "base",
     label: "Base",
-    highlight: true,              // highlighted — "más probable"
-    pedidos: "[TODO]",
-    ticketPromedio: "$[TODO]",
-    facturacionMensual: "$[TODO]",
-    margenNeto: "[TODO]%",
-    recupero: "[TODO]–[TODO] meses",
+    highlight: true,
+    pedidos: "30-40",
+    ticketPromedio: "$34.500",
+    facturacionMensual: "$31.000.000 - $41.400.000",
+    margenNeto: "12-15%",
+    recupero: "12-18 meses",
   },
   {
     id: "optimista",
     label: "Optimista",
     highlight: false,
-    pedidos: "[TODO]",
-    ticketPromedio: "$[TODO]",
-    facturacionMensual: "$[TODO]",
-    margenNeto: "[TODO]%",
-    recupero: "[TODO]–[TODO] meses",
+    pedidos: "45-60",
+    ticketPromedio: "$35.000",
+    facturacionMensual: "$47.250.000 - $63.000.000",
+    margenNeto: "15-18%",
+    recupero: "10-12 meses",
   },
 ] as const;
 
@@ -136,8 +134,8 @@ export const FRANCHISE_PROCESS_STEPS = [
 ] as const;
 
 export const FRANCHISE_TRUST = {
-  openingSince: "[TODO]",          // ej: "2022"
-  totalOrders: "[TODO]",           // ej: "50.000"
+  openingSince: "[AÑO_DE_APERTURA]", // Reemplazar por el año de apertura real (ej: "2022")
+  totalOrders: "+10.000", // Estimado. Ajustar al número histórico real si es mayor.
   responseTime: "24–48 hs",
 } as const;
 
