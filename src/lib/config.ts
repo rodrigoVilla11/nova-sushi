@@ -5,7 +5,7 @@ export const CONTACT = {
   phone: "+54 9 351 258 3838",
   address: "Ambrosio Olmos 939, Córdoba",
   googleMapsUrl: "https://maps.app.goo.gl/hhF6HzHDkayGUz338",
-  pedisyUrl: "https://web.pedisy.com/tiendas/n%C3%B5va-sushi",
+  pedisyUrl: "https://linktr.ee/novasushi_sucursales",
   siteUrl: "https://nova-sushi.com",
 } as const;
 
