@@ -9,7 +9,7 @@ export const STEPS: StoryStep[] = [
     title: "El inicio del sueño",
     text:
       "A los 22 años decidimos emprender: trajimos una franquicia a Córdoba. Empujando con marketing y mucho esfuerzo, aprendimos a manejar un negocio.",
-    media: { type: "image", src: "/armandolocal.png", alt: "Primer local y primeras campañas" },
+    media: { type: "image", src: "/nova-sushi.png", alt: "Primer local y primeras campañas" },
   },
   {
     id: "aprendizaje-23-24",
@@ -25,7 +25,7 @@ export const STEPS: StoryStep[] = [
     title: "Nace Nõva Sushi",
     text:
       "Al ver que el valor lo construíamos nosotros, decidimos empezar algo propio. Nace Nõva con foco en innovación: piezas más grandes, Sushi Dog y Sushi Burger.",
-    media: { type: "image", src: "/us.jpg", alt: "Branding y primeros productos Nõva" },
+    media: { type: "image", src: "/DSC00013.jpg", alt: "Branding y primeros productos Nõva" },
   },
   {
     id: "filosofia",
